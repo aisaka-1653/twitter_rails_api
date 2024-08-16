@@ -14,8 +14,13 @@ services:
       - bundle:/usr/local/bundle
     ports:
       - "3000:3000"
+    networks:
+      - external
     depends_on:
       - db
 volumes:
   bundle:
   db:
+networks:
+  external:
+    external: true
