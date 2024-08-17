@@ -8,3 +8,12 @@ AllCops:
   NewCops: enable
 RSpec/MultipleExpectations:
   Max: 2
+LineLength:
+  Exclude:
+    - 'config/initializers/devise.rb'
+AbcSize:
+  Exclude:
+    - 'db/migrate/*'
+MethodLength:
+  Exclude:
+    - 'db/migrate/*'
