@@ -1,24 +1,44 @@
-# README
+## About
+[frontend](https://github.com/aisaka-1653/twitter_react_front)と同時に使用する｡
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Setup
 
-Things you may want to cover:
+> [!WARNING]
+> フロント側で既に外部ネットワーク(external)を作成している場合は､手順1をスキップしてください
 
-* Ruby version
+1. フロントコンテナとの通信用に外部ネットワークを作成する  
+```bash
+$ docker network create external
+```
 
-* System dependencies
+2. リポジトリをクローンする
+```bash
+$ git clone https://github.com/aisaka-1653/twitter_rails_api.git
+$ cd twitter_rails_api
+```
 
-* Configuration
+3. docker-composeをビルドする
+```bash
+$ docker-compose build
+```
 
-* Database creation
+4. Gemをインストールする
+```bash
+$ docker-compose run --rm api bundle install
+```
 
-* Database initialization
+5. dbを作成する
+```bash
+$ docker-compose run --rm api bin/rails db:create
+```
 
-* How to run the test suite
+6. migrateする
+```bash
+$ docker-compose run --rm api bin/rails db:migrate
+```
 
-* Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
-
-* ...
+7. 開発サーバーを起動する
+```bash
+$ docker-compose up -d
+```
