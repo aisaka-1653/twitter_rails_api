@@ -7,9 +7,8 @@ class User < ApplicationRecord
   has_one_attached :avatar
   has_one_attached :header
 
-  validates :email, :password, :display_name, :username, :date_of_birth, presence: true
+  validates :display_name, :username, :date_of_birth, presence: true
   validates :username, uniqueness: { case_sensitive: false }
-  validates :password, length: { minimum: 6 }
   validates :display_name, :username, length: { maximum: 50 }
   validates :bio, length: { maximum: 160 }
   validates :location, length: { maximum: 30 }
