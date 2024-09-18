@@ -4,7 +4,8 @@ module Api
   module V1
     class TweetsController < ApplicationController
       def index
-        render json: { name: 'example' }
+        @tweets = Tweet.preload(:user).with_attached_image.order(created_at: :desc)
+        render json: @tweets, each_serializer: Tweets::Index::TweetSerializer
       end
 
       def create
