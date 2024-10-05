@@ -6,7 +6,7 @@ module Tweets
       attributes %i[id content image_url]
 
       delegate :image_url, to: :object
-      belongs_to :user, serializer: Users::Show::UserSerializer
+      belongs_to :user, serializer: Users::UserSerializer
     end
   end
 end
