@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    module User
+    module Auth
       class SessionsController < ApplicationController
         def index
           if current_api_v1_user
