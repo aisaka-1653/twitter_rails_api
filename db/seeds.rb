@@ -1,9 +1,20 @@
 # frozen_string_literal: true
 
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
+ApplicationRecord.transaction do
+  10.times do |_n|
+    user = User.new(
+      email: Faker::Internet.unique.email,
+      password: 123_456,
+      display_name: Faker::Name.unique.first_name,
+      username: Faker::Internet.unique.username,
+      date_of_birth: Faker::Date.birthday
+    )
+    user.skip_confirmation!
+    user.save!
+    20.times do |_n|
+      user.tweets.create!(
+        content: Faker::Lorem.paragraph
+      )
+    end
+  end
+end
