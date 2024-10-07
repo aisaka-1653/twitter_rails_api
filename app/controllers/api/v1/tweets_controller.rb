@@ -3,6 +3,8 @@
 module Api
   module V1
     class TweetsController < ApplicationController
+      before_action :set_tweet, only: %i[show]
+
       DEFAULT_LIMIT = 10
 
       def index
@@ -11,6 +13,10 @@ module Api
           tweets: serialize_tweets(tweets),
           has_more: Tweet.count > (offset + limit)
         }
+      end
+
+      def show
+        render json: @tweet, serializer: Tweets::TweetSerializer
       end
 
       def create
@@ -29,10 +35,14 @@ module Api
         params.require(:tweet).permit(:content)
       end
 
+      def set_tweet
+        @tweet = Tweet.find(params[:id])
+      end
+
       def serialize_tweets(tweets)
         ActiveModelSerializers::SerializableResource.new(
           tweets,
-          each_serializer: Tweets::Index::TweetSerializer
+          each_serializer: Tweets::TweetSerializer
         )
       end
 
