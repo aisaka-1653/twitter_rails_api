@@ -10,7 +10,9 @@ module Users
       delegate :header_url, to: :object
 
       def tweets
-        object.tweets.includes(image_attachment: :blob)
+        object.tweets
+          .includes(image_attachment: :blob)
+          .order(created_at: :desc)
       end
     end
   end
