@@ -14,12 +14,6 @@ module Api
           render json: { error: 'ツイートに失敗しました' }, status: :unprocessable_entity
         end
       end
-
-      private
-
-      def image_params
-        params.require(:image).permit(:tweet_id, :image)
-      end
     end
   end
 end
