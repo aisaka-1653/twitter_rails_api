@@ -11,8 +11,8 @@ module Users
 
       def tweets
         object.tweets
-          .includes(image_attachment: :blob)
-          .order(created_at: :desc)
+              .includes(image_attachment: :blob)
+              .order(created_at: :desc)
       end
     end
   end
