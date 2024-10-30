@@ -3,7 +3,7 @@
 module Api
   module V1
     class TweetsController < ApplicationController
-      before_action :set_tweet, only: %i[show]
+      before_action :set_tweet, only: %i[show, destroy]
 
       DEFAULT_LIMIT = 10
 
@@ -24,6 +24,19 @@ module Api
 
         if @tweet.save
           render json: { tweet_id: @tweet.id }, status: :created
+        else
+          render json: @tweet.errors, status: :unprocessable_entity
+        end
+      end
+
+      def destroy
+        unless @tweet.user == current_api_v1_user
+          render json: {error: 'Unauthorized'}, status: :forbidden
+          return
+        end
+
+        if @tweet.destroy
+          head :no_content
         else
           render json: @tweet.errors, status: :unprocessable_entity
         end
