@@ -2,9 +2,12 @@
 
 module Tweets
   class TweetSerializer < ActiveModel::Serializer
-    attributes %i[id content image_url created_at]
+    attributes %i[id content image_url created_at user]
 
     delegate :image_url, to: :object
-    belongs_to :user, serializer: Users::UserSerializer
+
+    def user
+      Users::UserSerializer.new(object.user).as_json
+    end
   end
 end
