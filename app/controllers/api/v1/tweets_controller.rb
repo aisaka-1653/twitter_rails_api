@@ -3,7 +3,7 @@
 module Api
   module V1
     class TweetsController < ApplicationController
-      before_action :set_tweet, only: %i[show, destroy]
+      before_action :set_tweet, only: %i[show destroy]
 
       DEFAULT_LIMIT = 10
 
@@ -31,7 +31,7 @@ module Api
 
       def destroy
         unless @tweet.user == current_api_v1_user
-          render json: {error: 'Unauthorized'}, status: :forbidden
+          render json: { error: 'Unauthorized' }, status: :forbidden
           return
         end
 
