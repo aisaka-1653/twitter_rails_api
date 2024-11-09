@@ -7,9 +7,11 @@ Rails.application.routes.draw do
         resources :sessions, only: %i[index]
       end
       mount_devise_token_auth_for 'User', at: 'users'
-      resources :tweets
+      resources :tweets do
+        resources :comments, only: %i[index], module: 'tweets'
+      end
       resources :images
-      resources :comments
+      resources :comments, only: %i[create]
       resources :users, only: %i[show]
       resource :profile, controller: 'users'
     end
