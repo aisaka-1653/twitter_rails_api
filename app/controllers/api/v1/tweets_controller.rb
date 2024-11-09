@@ -16,7 +16,7 @@ module Api
       end
 
       def show
-        render json: @tweet, serializer: Tweets::TweetSerializer
+        render json: @tweet, serializer: ::Tweets::TweetSerializer
       end
 
       def create
@@ -55,7 +55,7 @@ module Api
       def serialize_tweets(tweets)
         ActiveModelSerializers::SerializableResource.new(
           tweets,
-          each_serializer: Tweets::TweetSerializer
+          each_serializer: ::Tweets::TweetSerializer
         )
       end
 
