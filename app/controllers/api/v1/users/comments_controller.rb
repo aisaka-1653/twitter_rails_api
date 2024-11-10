@@ -19,8 +19,8 @@ module Api
 
         def fetch_comments
           @user.comments
-                .recent
-                .preload(user: { avatar_attachment: :blob })
+               .recent
+               .preload(user: { avatar_attachment: :blob })
         end
       end
     end
