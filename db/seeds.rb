@@ -18,3 +18,16 @@ ApplicationRecord.transaction do
     end
   end
 end
+
+ApplicationRecord.transaction do
+  User.find_each do |user|
+    User.where.not(id: user.id).find_each do |other_user|
+      other_user.tweets.find_each do |tweet|
+        user.comments.create!(
+          tweet_id: tweet.id,
+          content: Faker::Lorem.paragraph
+        )
+      end
+    end
+  end
+end
