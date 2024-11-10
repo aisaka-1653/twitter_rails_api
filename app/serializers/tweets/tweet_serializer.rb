@@ -7,7 +7,7 @@ module Tweets
     delegate :image_url, to: :object
 
     def engagement
-      { comment: object.comments.count }
+      { comment: object.comments.size }
     end
 
     def user

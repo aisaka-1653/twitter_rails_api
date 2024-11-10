@@ -60,7 +60,8 @@ module Api
       end
 
       def fetch_tweets
-        Tweet.recent.preload(:user).with_attached_image
+        Tweet.recent.includes(:user, :image_attachment)
+             .preload(:comments)
              .limit(limit)
              .offset(offset)
       end
