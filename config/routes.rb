@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
       resources :tweets do
         resources :comments, only: %i[index], module: 'tweets'
+        resources :retweets, only: %i[create], module: 'tweets'
       end
 
       resources :users, only: %i[show] do
