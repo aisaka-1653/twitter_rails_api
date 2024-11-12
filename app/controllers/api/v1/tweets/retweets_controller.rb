@@ -5,19 +5,19 @@ module Api
     module Tweets
       class RetweetsController < ApplicationController
         def create
-          @retweet = current_api_v1_user.retweets.build(retweet_params)
+          tweet = Tweet.find(params[:tweet_id])
+
+          if current_api_v1_user.retweets.exists?(tweet:)
+            return head :unprocessable_entity
+          end
+
+          @retweet = current_api_v1_user.retweets.build(tweet:)
 
           if @retweet.save
             head :created
           else
             render json: @retweet.errors, status: :unprocessable_entity
           end
-        end
-
-        private
-
-        def retweet_params
-          params.require(:retweet).permit(:tweet_id)
         end
       end
     end
