@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
       resources :users, only: %i[show] do
         resources :comments, only: %i[index], module: 'users'
+        resources :retweets, only: %i[index], module: 'users'
       end
 
       resources :images
