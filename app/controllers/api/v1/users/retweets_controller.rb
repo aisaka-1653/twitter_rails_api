@@ -19,8 +19,8 @@ module Api
 
         def fetch_retweets
           @user.retweeted_tweets
-            .includes(:user, :image_attachment)
-            .preload(:comments)
+               .includes(:user, :image_attachment)
+               .preload(:comments)
         end
       end
     end

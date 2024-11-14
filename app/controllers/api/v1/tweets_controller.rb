@@ -56,7 +56,7 @@ module Api
         ActiveModelSerializers::SerializableResource.new(
           tweets,
           each_serializer: ::Tweets::TweetSerializer,
-          current_user: current_api_v1_user,
+          current_user: current_api_v1_user
         )
       end
 
@@ -74,8 +74,8 @@ module Api
 
       def fetch_total_count
         Tweet.left_joins(:retweets)
-          .distinct
-          .count
+             .distinct
+             .count
       end
 
       def limit
