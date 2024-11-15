@@ -8,6 +8,9 @@ class User < ApplicationRecord
   include DeviseTokenAuth::Concerns::User
   has_many :tweets, dependent: :destroy
   has_many :comments, dependent: :destroy
+  has_many :retweets, dependent: :destroy
+  has_many :retweeted_tweets, -> { merge(Retweet.recent) }, through: :retweets, source: :tweet
+
   has_one_attached :avatar
   has_one_attached :header
 

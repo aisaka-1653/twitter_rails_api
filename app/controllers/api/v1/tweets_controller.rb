@@ -11,7 +11,7 @@ module Api
         tweets = fetch_tweets
         render json: {
           tweets: serialize_tweets(tweets),
-          has_more: Tweet.count > (offset + limit)
+          has_more: fetch_total_count > (offset + limit)
         }
       end
 
@@ -55,15 +55,27 @@ module Api
       def serialize_tweets(tweets)
         ActiveModelSerializers::SerializableResource.new(
           tweets,
-          each_serializer: ::Tweets::TweetSerializer
+          each_serializer: ::Tweets::TweetSerializer,
+          current_user: current_api_v1_user
         )
       end
 
       def fetch_tweets
-        Tweet.recent.includes(:user, :image_attachment)
-             .preload(:comments)
-             .limit(limit)
-             .offset(offset)
+        Tweet
+          .left_joins(:retweets)
+          .select('tweets.*, COALESCE(retweets.created_at, tweets.created_at) as sort_date')
+          .includes(:user, :image_attachment)
+          .preload(:comments)
+          .distinct
+          .order('sort_date DESC')
+          .limit(limit)
+          .offset(offset)
+      end
+
+      def fetch_total_count
+        Tweet.left_joins(:retweets)
+             .distinct
+             .count
       end
 
       def limit

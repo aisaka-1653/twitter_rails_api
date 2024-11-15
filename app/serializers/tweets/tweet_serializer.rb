@@ -7,11 +7,21 @@ module Tweets
     delegate :image_url, to: :object
 
     def engagement
-      { comment: object.comments.size }
+      {
+        comment: object.comments.size,
+        retweet: {
+          count: object.retweets.size,
+          retweeted: retweeted?
+        }
+      }
     end
 
     def user
       Users::UserSerializer.new(object.user).as_json
+    end
+
+    def retweeted?
+      object.retweets.exists?(user: instance_options[:current_user])
     end
   end
 end
