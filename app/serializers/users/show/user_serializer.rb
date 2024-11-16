@@ -6,13 +6,16 @@ module Users
       attributes %i[id email display_name username avatar_url header_url bio location website date_of_birth uid]
       has_many :tweets, serializer: Tweets::TweetSerializer
 
-      delegate :avatar_url, to: :object
-      delegate :header_url, to: :object
+      delegate :avatar_url, :header_url, to: :object
 
       def tweets
         object.tweets
               .includes(image_attachment: :blob)
               .order(created_at: :desc)
+      end
+
+      def tweet_serializer_options
+        { serializer: Tweets::TweetSerializer, scope: instance_options[:current_user]}
       end
     end
   end
