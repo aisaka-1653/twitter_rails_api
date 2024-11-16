@@ -16,7 +16,7 @@ module Api
       end
 
       def show
-        render json: @tweet, serializer: ::Tweets::TweetSerializer
+        render json: @tweet, serializer: ::Tweets::TweetSerializer, current_user: current_api_v1_user
       end
 
       def create

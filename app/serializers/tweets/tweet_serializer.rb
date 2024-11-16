@@ -8,7 +8,8 @@ module Tweets
 
     def engagement
       {
-        comment: object.comments.size,
+        following: following?,
+        comment: comment_count,
         retweet: retweet_engagement,
         like: like_engagement
       }
@@ -24,8 +25,12 @@ module Tweets
       object.public_send(association).exists?(user: instance_options[:current_user])
     end
 
+    def following?
+      instance_options[:current_user].following?(object.user)
+    end
+
     def comment_count
-      object :comment.size
+      object.comments.size
     end
 
     def retweet_engagement
