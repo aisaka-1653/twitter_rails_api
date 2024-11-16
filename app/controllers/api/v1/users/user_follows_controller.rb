@@ -11,7 +11,7 @@ module Api
           current_api_v1_user.follow(@user)
           head :created
         rescue ActiveRecord::RecordInvalid
-          render json: { error: "フォローできませんでした" }, status: :unprocessable_entity
+          render json: { error: 'フォローできませんでした' }, status: :unprocessable_entity
         end
 
         private
@@ -21,15 +21,15 @@ module Api
         end
 
         def check_self_follow
-          if @user == current_api_v1_user
-            render json: { error: "自分自身をフォローすることはできません"}, status: :unprocessable_entity
-          end
+          return unless @user == current_api_v1_user
+
+          render json: { error: '自分自身をフォローすることはできません' }, status: :unprocessable_entity
         end
 
         def check_follow_status
-          if current_api_v1_user.following?(@user)
-            render json: { error: "既にフォローしているユーザーはフォローできません"}, status: :unprocessable_entity
-          end
+          return unless current_api_v1_user.following?(@user)
+
+          render json: { error: '既にフォローしているユーザーはフォローできません' }, status: :unprocessable_entity
         end
       end
     end
