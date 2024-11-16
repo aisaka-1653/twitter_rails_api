@@ -5,7 +5,7 @@ module Api
     module Users
       class UserFollowsController < ApplicationController
         before_action :set_user, only: %i[create]
-        before_action :check_self_follow, only: %i[create]
+        before_action :check_self_follow, :check_follow_status, only: %i[create]
 
         def create
           current_api_v1_user.follow(@user)
@@ -23,6 +23,12 @@ module Api
         def check_self_follow
           if @user == current_api_v1_user
             render json: { error: "自分自身をフォローすることはできません"}, status: :unprocessable_entity
+          end
+        end
+
+        def check_follow_status
+          if current_api_v1_user.following?(@user)
+            render json: { error: "既にフォローしているユーザーはフォローできません"}, status: :unprocessable_entity
           end
         end
       end
