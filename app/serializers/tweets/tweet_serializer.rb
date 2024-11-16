@@ -11,8 +11,12 @@ module Tweets
         comment: object.comments.size,
         retweet: {
           count: object.retweets.size,
-          retweeted: retweeted?
-        }
+          retweeted: user_interaction_exists?(:retweets),
+        },
+        like: {
+          count: object.likes.size,
+          liked: user_interaction_exists?(:likes)
+        },
       }
     end
 
@@ -20,8 +24,8 @@ module Tweets
       Users::UserSerializer.new(object.user).as_json
     end
 
-    def retweeted?
-      object.retweets.exists?(user: instance_options[:current_user])
+    def user_interaction_exists?(association)
+      object.public_send(association).exists?(user: instance_options[:current_user])
     end
   end
 end
