@@ -15,7 +15,7 @@ module Users
       end
 
       def tweet_serializer_options
-        { serializer: Tweets::TweetSerializer, scope: instance_options[:current_user]}
+        { serializer: Tweets::TweetSerializer, scope: instance_options[:current_user] }
       end
     end
   end
