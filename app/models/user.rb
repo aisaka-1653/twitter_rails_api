@@ -14,8 +14,8 @@ class User < ApplicationRecord
   has_many :retweeted_tweets, -> { merge(Retweet.recent) }, through: :retweets, source: :tweet
   has_many :liked_tweets, -> { merge(Like.recent) }, through: :likes, source: :tweet
 
-  has_many :active_follows, class_name: "UserFollow", foreign_key: :from_user_id, dependent: :destroy, inverseof: :from_user
-  has_many :passive_follows, class_name: "UserFollow", foreign_key: :to_user_id, dependent: :destroy, inverseof: :to_user
+  has_many :active_follows, class_name: "UserFollow", foreign_key: :from_user_id, dependent: :destroy, inverse_of: :from_user
+  has_many :passive_follows, class_name: "UserFollow", foreign_key: :to_user_id, dependent: :destroy, inverse_of: :to_user
   has_many :following, through: :active_follows, source: :to_user
   has_many :followers, through: :passive_follows, source: :from_user
 
