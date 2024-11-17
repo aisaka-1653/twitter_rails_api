@@ -11,16 +11,17 @@ Rails.application.routes.draw do
       resources :tweets do
         resources :comments, only: %i[index], module: 'tweets'
         resource :retweets, only: %i[create destroy], module: 'tweets'
+        resource :likes, only: %i[create destroy], module: 'tweets'
       end
 
       resources :users, only: %i[show] do
         resources :comments, only: %i[index], module: 'users'
         resources :retweets, only: %i[index], module: 'users'
+        resources :likes, only: %i[index], module: 'users'
       end
 
       resources :images
       resources :comments, only: %i[create destroy]
-      # resources :users, only: %i[show]
       resource :profile, controller: 'users'
     end
   end

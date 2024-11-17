@@ -6,7 +6,8 @@ module Api
       before_action :set_user, only: %i[show]
 
       def show
-        render json: @user, serializer: ::Users::Show::UserSerializer
+        render json: @user, serializer: ::Users::Show::UserSerializer, current_user: current_api_v1_user,
+               scope: current_api_v1_user
       end
 
       def update

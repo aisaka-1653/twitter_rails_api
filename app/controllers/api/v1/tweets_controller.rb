@@ -65,7 +65,7 @@ module Api
           .left_joins(:retweets)
           .select('tweets.*, COALESCE(retweets.created_at, tweets.created_at) as sort_date')
           .includes(:user, :image_attachment)
-          .preload(:comments)
+          .preload(:comments, :likes)
           .distinct
           .order('sort_date DESC')
           .limit(limit)
