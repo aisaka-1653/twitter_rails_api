@@ -6,12 +6,20 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :validatable, :timeoutable
   include DeviseTokenAuth::Concerns::User
+
   has_many :tweets, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :retweets, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :retweeted_tweets, -> { merge(Retweet.recent) }, through: :retweets, source: :tweet
   has_many :liked_tweets, -> { merge(Like.recent) }, through: :likes, source: :tweet
+
+  has_many :active_follows, class_name: 'UserFollow', foreign_key: :from_user_id, dependent: :destroy,
+                            inverse_of: :from_user
+  has_many :passive_follows, class_name: 'UserFollow', foreign_key: :to_user_id, dependent: :destroy,
+                             inverse_of: :to_user
+  has_many :following, through: :active_follows, source: :to_user
+  has_many :followers, through: :passive_follows, source: :from_user
 
   has_one_attached :avatar
   has_one_attached :header
@@ -29,6 +37,18 @@ class User < ApplicationRecord
 
   def header_url
     Rails.application.routes.url_helpers.url_for(header) if header.attached?
+  end
+
+  def follow(other_user)
+    following << other_user unless following?(other_user)
+  end
+
+  def unfollow(other_user)
+    following.delete(other_user)
+  end
+
+  def following?(other_user)
+    following.include?(other_user)
   end
 
   private

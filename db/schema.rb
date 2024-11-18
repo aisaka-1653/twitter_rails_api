@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_15_133058) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_16_072919) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -78,6 +78,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_15_133058) do
     t.index ["user_id"], name: "index_tweets_on_user_id"
   end
 
+  create_table "user_follows", force: :cascade do |t|
+    t.bigint "from_user_id", null: false
+    t.bigint "to_user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["from_user_id", "to_user_id"], name: "index_user_follows_on_from_user_id_and_to_user_id", unique: true
+    t.index ["from_user_id"], name: "index_user_follows_on_from_user_id"
+    t.index ["to_user_id"], name: "index_user_follows_on_to_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
@@ -119,4 +129,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_15_133058) do
   add_foreign_key "retweets", "tweets"
   add_foreign_key "retweets", "users"
   add_foreign_key "tweets", "users"
+  add_foreign_key "user_follows", "users", column: "from_user_id"
+  add_foreign_key "user_follows", "users", column: "to_user_id"
 end
